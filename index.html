@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Love Gift</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: linear-gradient(to bottom, #ffe0eb, #fbcfe8, #f9a8d4);
+      font-family: Arial, sans-serif;
+      text-align: center;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      font-weight: bold;
+      color: #be185d;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.1);
+      opacity: 0;
+      transform: translateY(-50px);
+      animation: fadeInDown 1s forwards;
+    }
+
+    section {
+      background: white;
+      border-radius: 16px;
+      padding: 20px;
+      margin-top: 40px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      max-width: 600px;
+      opacity: 0;
+      transform: translateY(50px);
+      animation: fadeInUp 1s forwards;
+    }
+
+    section:nth-of-type(1) { animation-delay: 0.2s; }
+    section:nth-of-type(2) { animation-delay: 0.4s; }
+    section:nth-of-type(3) { animation-delay: 0.6s; }
+    section:nth-of-type(4) { animation-delay: 0.8s; }
+
+    h2 {
+      color: #db2777;
+      margin-bottom: 15px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      color: #444;
+      font-size: 1rem;
+    }
+
+    button {
+      padding: 10px 20px;
+      background: #ec4899;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: transform 0.2s, background 0.3s;
+    }
+    button:hover { transform: scale(1.05); background:#db2777; }
+
+    .love-message {
+      margin-top: 15px;
+      padding: 10px;
+      background: #ffe4f1;
+      border-radius: 10px;
+      color: #9d174d;
+      font-weight: bold;
+      display: none;
+    }
+
+    /* Game */
+    .game {
+      position: relative;
+      height: 250px;
+      overflow: hidden;
+    }
+    .heart {
+      position: absolute;
+      font-size: 28px;
+      cursor: pointer;
+      user-select: none;
+      animation: float 2s infinite ease-in-out;
+    }
+    @keyframes float {
+      0% { transform: translateY(0);}
+      50% { transform: translateY(-10px);}
+      100% { transform: translateY(0);}
+    }
+    .congrats {
+      position: absolute;
+      inset: 0;
+      background: rgba(255, 228, 245, 0.9);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 16px;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #db2777;
+      display: none;
+    }
+
+    /* Floating hearts background */
+    .floating {
+      position: absolute;
+      font-size: 20px;
+      opacity: 0.4;
+      animation: rise linear infinite;
+    }
+    @keyframes rise {
+      from { transform: translateY(100vh); }
+      to { transform: translateY(-10vh); }
+    }
+
+    @keyframes fadeInDown {
+      to { opacity: 1; transform: translateY(0);}
+    }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0);}
+    }
+  </style>
+</head>
+<body>
+  <!-- Floating background hearts -->
+  <div id="bg-hearts"></div>
+
+  <h1>Welcome, Maryam ❤️</h1>
+
+  <section>
+    <h2>Our Memories</h2>
+    <ul>
+      <li>✨ The first time we met</li>
+      <li>🌹 Our first smile together</li>
+      <li>🎶 Sharing songs & laughs</li>
+      <li>🌍 Dreaming of our future</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Click for Love 💌</h2>
+    <button id="loveBtn">❤️ Click Me</button>
+    <div id="loveMsg" class="love-message"></div>
+  </section>
+
+  <section class="game">
+    <h2>Catch the Hearts 💖</h2>
+    <p>Score: <span id="score">0</span></p>
+    <div id="hearts-container"></div>
+    <div id="congrats" class="congrats">🎉 Maryam, You win my heart forever 💕</div>
+  </section>
+
+  <section>
+    <h2>A Message for You</h2>
+    <p>Maryam, every moment with you is a gift. You make my world brighter, my days happier, and my heart fuller. 💖</p>
+  </section>
+
+  <script>
+    const herName = "Maryam";
+
+    // Floating background hearts
+    const bg = document.getElementById("bg-hearts");
+    for (let i = 0; i < 15; i++) {
+      const h = document.createElement("div");
+      h.textContent = "❤️";
+      h.className = "floating";
+      h.style.left = Math.random() * window.innerWidth + "px";
+      h.style.animationDuration = 10 + Math.random() * 10 + "s";
+      h.style.animationDelay = Math.random() * 5 + "s";
+      bg.appendChild(h);
+    }
+
+    // Love messages
+    const loveBtn = document.getElementById("loveBtn");
+    const loveMsg = document.getElementById("loveMsg");
+    const messages = [
+      `You are my sunshine, ${herName} ☀️`,
+      `I love you endlessly, ${herName} 💖`,
+      `With you, everything feels right 🌸`,
+      `${herName}, you are my favorite person 🌍`,
+      `Forever and always, it's you 💕`,
+    ];
+    loveBtn.addEventListener("click", () => {
+      const msg = messages[Math.floor(Math.random() * messages.length)];
+      loveMsg.textContent = msg;
+      loveMsg.style.display = "block";
+    });
+
+    // Game
+    let score = 0;
+    const scoreEl = document.getElementById("score");
+    const heartsContainer = document.getElementById("hearts-container");
+    const congrats = document.getElementById("congrats");
+
+    let hearts = Array.from({length:5}, (_,i)=>({id:i, x:Math.random()*80, y:Math.random()*60}));
+    function renderHearts() {
+      heartsContainer.innerHTML = "";
+      hearts.forEach(h => {
+        const el = document.createElement("div");
+        el.textContent = "❤️";
+        el.className = "heart";
+        el.style.left = h.x + "%";
+        el.style.top = h.y + "%";
+        el.onclick = () => {
+          score++;
+          scoreEl.textContent = score;
+          h.x = Math.random() * 80;
+          h.y = Math.random() * 60;
+          renderHearts();
+          if (score >= 10) {
+            congrats.style.display = "flex";
+          }
+        };
+        heartsContainer.appendChild(el);
+      });
+    }
+    renderHearts();
+  </script>
+</body>
+</html>
