@@ -28,6 +28,7 @@
       opacity: 0;
       transform: translateY(-50px);
       animation: fadeInDown 1s forwards;
+      z-index: 2;
     }
 
     section {
@@ -40,6 +41,8 @@
       opacity: 0;
       transform: translateY(50px);
       animation: fadeInUp 1s forwards;
+      z-index: 2;
+      position: relative;
     }
 
     section:nth-of-type(1) { animation-delay: 0.2s; }
@@ -120,10 +123,40 @@
       font-size: 20px;
       opacity: 0.4;
       animation: rise linear infinite;
+      z-index: 1;
     }
     @keyframes rise {
       from { transform: translateY(100vh); }
       to { transform: translateY(-10vh); }
+    }
+
+    /* Floating image hearts */
+    .img-heart {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: pink;
+      transform: rotate(45deg);
+      animation: rise linear forwards;
+      z-index: 1;
+      overflow: hidden;
+    }
+    .img-heart::before,
+    .img-heart::after {
+      content: "";
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      background: pink;
+      border-radius: 50%;
+    }
+    .img-heart::before { top: -30px; left: 0; }
+    .img-heart::after { left: -30px; top: 0; }
+    .img-heart img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: rotate(-45deg);
     }
 
     @keyframes fadeInDown {
@@ -182,6 +215,34 @@
       h.style.animationDelay = Math.random() * 5 + "s";
       bg.appendChild(h);
     }
+
+    // Floating image hearts
+    const images = [
+      "https://picsum.photos/id/1011/200/200",
+      "https://picsum.photos/id/1025/200/200",
+      "https://picsum.photos/id/1035/200/200",
+      "https://picsum.photos/id/1041/200/200",
+      "https://picsum.photos/id/1050/200/200"
+    ];
+
+    function createImgHeart() {
+      const heart = document.createElement("div");
+      heart.classList.add("img-heart");
+
+      const img = document.createElement("img");
+      img.src = images[Math.floor(Math.random() * images.length)];
+      heart.appendChild(img);
+
+      heart.style.left = Math.random() * window.innerWidth + "px";
+      heart.style.animationDuration = 8 + Math.random() * 6 + "s";
+      document.body.appendChild(heart);
+
+      setTimeout(() => {
+        heart.remove();
+      }, 15000);
+    }
+
+    setInterval(createImgHeart, 2000);
 
     // Love messages
     const loveBtn = document.getElementById("loveBtn");
